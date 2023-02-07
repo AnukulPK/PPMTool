@@ -1,10 +1,13 @@
 package com.example.ppmtool.services;
+
 import com.example.ppmtool.domain.Backlog;
 import com.example.ppmtool.domain.ProjectTask;
 import com.example.ppmtool.repositories.BacklogRepository;
 import com.example.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectTaskService {
@@ -15,7 +18,7 @@ public class ProjectTaskService {
     private ProjectTaskRepository projectTaskRepository;
 
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
         //All Project tasks to be added to a specific project, project!=null
         Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
         //Set the backlog to the project task
@@ -26,21 +29,25 @@ public class ProjectTaskService {
         BacklogSequence++;
         backlog.setPTSequence(BacklogSequence);
         //Add Sequence to project task
-        projectTask.setProjectSequence(projectIdentifier+"-"+BacklogSequence);
+        projectTask.setProjectSequence(projectIdentifier + "-" + BacklogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
         // Set an initial priority when priority is null
 //        if(projectTask.getPriority()==0||projectTask.getPriority()==null){
 //            projectTask.setPriority(3);
 //        }
-        if(projectTask.getPriority()==null){
+        if (projectTask.getPriority() == null) {
             //In the future we need projectTask.getPriority()==0 to handle the form
             projectTask.setPriority(3);
         }
         //Set initial status when status is null
-        if(projectTask.getStatus()==null||projectTask.getStatus()==""){
+        if (projectTask.getStatus() == null || projectTask.getStatus() == "") {
             projectTask.setStatus("TO_DO");
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask> findBacklogById(String id) {
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 }
