@@ -86,7 +86,7 @@ public class ProjectTaskService {
 
         //make sure that the backlog/project id in the path corresponds to the right project
         if(!projectTask.getProjectIdentifier().equals(backlog_id)){
-            throw new ProjectNotFoundException("Porject task '"+pt_id+"' does not exist in project : '"+backlog_id);
+            throw new ProjectNotFoundException("Project task '"+pt_id+"' does not exist in project : '"+backlog_id);
         }
 
         return projectTask;
@@ -103,10 +103,6 @@ public class ProjectTaskService {
 
     public void deletePTByProjectSequence(String backlog_id, String pt_id){
         ProjectTask projectTask = findPTByProjectSequence(backlog_id, pt_id);
-        Backlog backlog = projectTask.getBacklog();
-        List<ProjectTask> projectTasks = backlog.getProjectTasks();
-        projectTasks.remove(projectTask);
-        backlogRepository.save(backlog);
         projectTaskRepository.delete(projectTask);
     }
 }
