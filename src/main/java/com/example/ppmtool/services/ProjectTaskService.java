@@ -43,7 +43,7 @@ public class ProjectTaskService {
 //        if(projectTask.getPriority()==0||projectTask.getPriority()==null){
 //            projectTask.setPriority(3);
 //        }
-           if (projectTask.getPriority() == null) {
+           if (projectTask.getPriority()==0 || projectTask.getPriority() == null) {
                //In the future we need projectTask.getPriority()==0 to handle the form
                projectTask.setPriority(3);
            }
